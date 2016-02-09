@@ -2,6 +2,9 @@ var gpio = require('rpi-gpio');
 var async = require('async');
 
 function stepperMotor(motorPins) {
+    this.runStatus = 1;
+    this.cycleNdx = 0;
+    this.velocity = 500;
     this.motorPins = motorPins;
     this.init();
     this.go();
@@ -49,9 +52,7 @@ stepperMotor.prototype.runMotorFuncGen = function runMotorFuncGen(thisP) {
 }
 
 //0:stop 1:forward -1:backward
-stepperMotor.prototype.runStatus = 1;
-stepperMotor.prototype.cycleNdx = 0;
-stepperMotor.prototype.velocity = 500;
+
 stepperMotor.prototype.delayWrite = function(pin, value, callback) {
     setTimeout(function() {
         gpio.write(pin, value, vallbeck);
@@ -66,7 +67,7 @@ stepperMotor.prototype.step = function() {
         case 2:
         case -1:
         case -2:
-            this.cycleNdx + this.runStatus;
+            this.cycleNdx += this.runStatus;
             this.cycleNdx = this.cycleNdx > 7 ? this.cycleNdx - 8 : this.cycleNdx;
             this.cycleNdx = this.cycleNdx < 0 ? this.cycleNdx + 8 : this.cycleNdx;
             var runArray = this.funcArrayGen(this.runMotorFuncGen)
