@@ -7,7 +7,6 @@ function stepperMotor(motorPins) {
     this.velocity = 500;
     this.motorPins = motorPins;
     this.init();
-    this.go();
 }
 
 stepperMotor.prototype.init = function() {
@@ -59,10 +58,7 @@ stepperMotor.prototype.delayWrite = function(pin, value, callback) {
     }, this.velocity)
 }
 
-var sInterval = setInterval;
-stepperMotor.prototype.go = function() {
-    sInterval(this.step(this), this.velocity);
-}
+
 stepperMotor.prototype.step = function(thisPointer) {
     switch(thisPointer.runStatus) {
         case 1:
@@ -85,6 +81,7 @@ stepperMotor.prototype.step = function(thisPointer) {
 //main
 var motorPins = [11, 12, 13, 15];
 var motor = new stepperMotor(motorPins);
+setInterval(motor.step, motor.velocity);
 // gpio.setup(motorPin[0], gpio.DIR_OUT, function() {
 //     gpio.setup(morotPin[1], gpio.DIR_OUT, function() {
 //         gpio.setup(morotPin[2], gpio.DIR_OUT, function() {
