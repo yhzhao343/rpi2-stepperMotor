@@ -18,25 +18,25 @@ stepperMotor.prototype.cycle = [[1,0,0,0],
                                 [0,0,1,1],
                                 [0,0,0,1],
                                 [1,0,0,1]];
-stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(pinNum) {
+stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(pinNdx) {
+    var thisPointer = this;
     return function(callback) {
-        gpio.setup(pinNum, gpio.DIR_OUT, callback)
+        gpio.setup(thisPointer.motorPins[pinNdx], gpio.DIR_OUT, callback)
     }
 }
 
 stepperMotor.prototype.funcArrayGen = function funcArrayGen(func) {
     var result = [];
     for(var i = 0; i < this.motorPins.length; i++) {
-        result.push(func(this.motorPins[i]));
+        result.push(func(i));
     }
     return result;
 }
 
-stepperMotor.prototype.runMotorFuncGen = function runMotorFuncGen(pinNum) {
+stepperMotor.prototype.runMotorFuncGen = function runMotorFuncGen(pinNdx) {
     var thisPointer = this;
-    console.log(thisPointer);
     return function(callback) {
-        gpio.write(pinNum, (thisPointer.cycle[thisPointer.cycleNdx])[pinNum] === 1, callback);
+        gpio.write(thisPointer.motorPins[pinNdx], (thisPointer.cycle[thisPointer.cycleNdx])[pinNdx] === 1, callback);
     }
 }
 
