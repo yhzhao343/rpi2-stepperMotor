@@ -58,11 +58,12 @@ stepperMotor.prototype.delayWrite = function(pin, value, callback) {
         gpio.write(pin, value, vallbeck);
     }, this.velocity)
 }
+
+var sInterval = setInterval;
 stepperMotor.prototype.go = function() {
-    setInterval(this.step(this), this.velocity);
+    sInterval(this.step(this), this.velocity);
 }
 stepperMotor.prototype.step = function(thisPointer) {
-    console.log(Object.keys(thisPointer));
     switch(thisPointer.runStatus) {
         case 1:
         case 2:
