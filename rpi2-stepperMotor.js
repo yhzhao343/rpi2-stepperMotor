@@ -59,16 +59,16 @@ stepperMotor.prototype.delayWrite = function(pin, value, callback) {
 }
 
 
-stepperMotor.prototype.step = function(thisPointer) {
-    switch(thisPointer.runStatus) {
+stepperMotor.prototype.step = function() {
+    switch(this.runStatus) {
         case 1:
         case 2:
         case -1:
         case -2:
-            thisPointer.cycleNdx += thisPointer.runStatus;
-            thisPointer.cycleNdx = thisPointer.cycleNdx > 7 ? thisPointer.cycleNdx - 8 : thisPointer.cycleNdx;
-            thisPointer.cycleNdx = thisPointer.cycleNdx < 0 ? thisPointer.cycleNdx + 8 : thisPointer.cycleNdx;
-            var runArray = thisPointer.funcArrayGen(thisPointer.runMotorFuncGen)
+            this.cycleNdx += this.runStatus;
+            this.cycleNdx = this.cycleNdx > 7 ? this.cycleNdx - 8 : this.cycleNdx;
+            this.cycleNdx = this.cycleNdx < 0 ? this.cycleNdx + 8 : this.cycleNdx;
+            var runArray = this.funcArrayGen(this.runMotorFuncGen)
             async.parallel(runArray, function(err, results) {
               console.log("Pins set");
             })
