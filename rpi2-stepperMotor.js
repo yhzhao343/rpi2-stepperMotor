@@ -3,6 +3,10 @@ var async = require('async');
 
 function stepperMotor(motorPins) {
     this.motorPins = motorPins;
+    async.series(this.init, this.go)
+}
+
+stepperMotor.prototype.init = function() {
     var setupFuncArray = this.funcArrayGen(this.pinSetupFuncGen(this));
     async.parallel(setupFuncArray, function(err, results) {
       console.log("Pins set up");
@@ -52,27 +56,25 @@ stepperMotor.prototype.delayWrite = function(pin, value, callback) {
         gpio.write(pin, value, vallbeck);
     }, this.velocity)
 }
-
 stepperMotor.prototype.go = function() {
-    while(!(this.runStatus === 0)) {
-        switch(this.runStatus) {
-            case 1:
-            case 2:
-            case -1:
-            case -2:
-                this.cycleNdx + this.runStatus;
-                this.cycleNdx = this.cycleNdx > 7 ? this.cycleNdx - 8 : this.cycleNdx;
-                this.cycleNdx = this.cycleNdx < 0 ? this.cycleNdx + 8 : this.cycleNdx;
-                var runArray = this.funcArrayGen(this.runMotorFuncGen)
-                async.parallel(runArray, function(err, results) {
-                  console.log("Pins set up");
-                })
-                var counter = this.velocity;
-                while(counter > 0) counter--;
-                break;
-            default:
-                console.log("invalid status");
-        }
+    setInterval(this.step, this.velocity);
+}
+stepperMotor.prototype.step = function() {
+    switch(this.runStatus) {
+        case 1:
+        case 2:
+        case -1:
+        case -2:
+            this.cycleNdx + this.runStatus;
+            this.cycleNdx = this.cycleNdx > 7 ? this.cycleNdx - 8 : this.cycleNdx;
+            this.cycleNdx = this.cycleNdx < 0 ? this.cycleNdx + 8 : this.cycleNdx;
+            var runArray = this.funcArrayGen(this.runMotorFuncGen)
+            async.parallel(runArray, function(err, results) {
+              console.log("Pins set");
+            })
+            break;
+        default:
+            console.log("invalid status");
     }
 }
 
