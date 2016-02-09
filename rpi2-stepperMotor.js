@@ -64,7 +64,8 @@ stepperMotor.prototype.go = function() {
                 async.parallel(runArray, function(err, results) {
                   console.log("Pins set up");
                 })
-                setTimeout(this.go, this.velocity)
+                var counter = this.velocity;
+                while(counter > 0) counter--;
                 break;
             default:
                 console.log("invalid status");
