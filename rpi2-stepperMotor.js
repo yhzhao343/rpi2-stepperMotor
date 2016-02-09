@@ -34,10 +34,12 @@ stepperMotor.prototype.funcArrayGen = function funcArrayGen(func) {
     return result;
 }
 
-stepperMotor.prototype.runMotorFuncGen = function runMotorFuncGen(pinNdx) {
-    var thisPointer = this;
-    return function(callback) {
-        gpio.write(thisPointer.motorPins[pinNdx], (thisPointer.cycle[thisPointer.cycleNdx])[pinNdx] === 1, callback);
+stepperMotor.prototype.runMotorFuncGen = function runMotorFuncGen(thisP) {
+    return function(pinNdx) {
+        var thisPointer = thisP;
+        return function(callback) {
+            gpio.write(thisPointer.motorPins[pinNdx], (thisPointer.cycle[thisPointer.cycleNdx])[pinNdx] === 1, callback);
+        }
     }
 }
 
