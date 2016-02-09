@@ -3,7 +3,7 @@ var async = require('async');
 
 function stepperMotor(motorPins) {
     this.motorPins = motorPins;
-    var setupFuncArray = this.funcArrayGen(this.pinSetupFuncGen, motorPins);
+    var setupFuncArray = this.funcArrayGen(this.pinSetupFuncGen(this));
     async.parallel(setupFuncArray, function(err, results) {
       console.log("Pins set up");
     })
@@ -17,16 +17,19 @@ stepperMotor.prototype.cycle = [[1,0,0,0],
                                 [0,0,1,1],
                                 [0,0,0,1],
                                 [1,0,0,1]];
-stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(pinNdx, motorPins) {
-    return function(callback) {
-        gpio.setup(motorPins[pinNdx], gpio.DIR_OUT, callback)
+stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(thisP) {
+    return function(pinNdx) {
+        var thisPointer = thisP;
+        return function(callback) {
+            gpio.setup(thisPointer.motorPins[pinNdx], gpio.DIR_OUT, callback)
+        }
     }
 }
 
-stepperMotor.prototype.funcArrayGen = function funcArrayGen(func, motorPins) {
+stepperMotor.prototype.funcArrayGen = function funcArrayGen(func) {
     var result = [];
-    for(var i = 0; i < motorPins.length; i++) {
-        result.push(func(i, motorPins));
+    for(var i = 0; i < this.motorPins.length; i++) {
+        result.push(func(i));
     }
     return result;
 }
@@ -74,7 +77,6 @@ stepperMotor.prototype.go = function() {
 //main
 var motorPins = [11, 12, 13, 15];
 var motor = new stepperMotor(motorPins);
-motor.go();
 // gpio.setup(motorPin[0], gpio.DIR_OUT, function() {
 //     gpio.setup(morotPin[1], gpio.DIR_OUT, function() {
 //         gpio.setup(morotPin[2], gpio.DIR_OUT, function() {
