@@ -3,17 +3,16 @@ var async = require('async');
 
 function stepperMotor(motorPins) {
     this.motorPins = motorPins;
-    async.series([function() {
-        var setupFuncArray = this.funcArrayGen(this.pinSetupFuncGen(this));
-        async.parallel(setupFuncArray, function(err, results) {
-            console.log("Pins set up");
-        })
-    }, this.go]);
+    this.init();
+    this.go();
 }
 
-
-
-
+stepperMotor.prototype.init = function() {
+    var setupFuncArray = this.funcArrayGen(this.pinSetupFuncGen(this));
+    async.parallel(setupFuncArray, function(err, results) {
+      console.log("Pins set up");
+    })
+}
 
 stepperMotor.prototype.cycle = [[1,0,0,0],
                                 [1,1,0,0],
