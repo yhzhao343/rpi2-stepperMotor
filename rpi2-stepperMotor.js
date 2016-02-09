@@ -3,7 +3,7 @@ var async = require('async');
 
 function stepperMotor(motorPins) {
     this.motorPins = motorPins;
-    async.series(this.init, this.go)
+    async.series([this.init, this.go]);
 }
 
 stepperMotor.prototype.init = function() {
