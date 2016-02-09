@@ -62,6 +62,7 @@ stepperMotor.prototype.go = function() {
     setInterval(this.step, this.velocity);
 }
 stepperMotor.prototype.step = function() {
+    console.log(Object.keys(this));
     switch(this.runStatus) {
         case 1:
         case 2:
