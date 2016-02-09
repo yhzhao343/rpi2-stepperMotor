@@ -60,6 +60,7 @@ stepperMotor.prototype.delayWrite = function(pin, value, callback) {
 
 
 stepperMotor.prototype.step = function() {
+    console.log(this.runStatus);
     switch(this.runStatus) {
         case 1:
         case 2:
