@@ -74,7 +74,7 @@ stepperMotor.prototype.go = function() {
 //main
 var motorPins = [11, 12, 13, 15];
 var motor = new stepperMotor(motorPins);
-
+motor.go();
 // gpio.setup(motorPin[0], gpio.DIR_OUT, function() {
 //     gpio.setup(morotPin[1], gpio.DIR_OUT, function() {
 //         gpio.setup(morotPin[2], gpio.DIR_OUT, function() {
