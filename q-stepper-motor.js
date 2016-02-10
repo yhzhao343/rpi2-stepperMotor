@@ -18,11 +18,11 @@ function stepperMotor(motorPins) {
 }
 
 stepperMotor.prototype.init = function init() {
-    return Q.nfcall(mygpio.setup, this.motorPins[0], gpio.DIR_OUT)
+    return Q.nfcall(gpio.setup, this.motorPins[0], gpio.DIR_OUT)
     // return Q.all(this.funcArrayGen(this.pinSetupFuncGen(this)));
 }
 stepperMotor.prototype.set0 = function set0() {
-    return Q.nfcall(mygpio.write, this.motorPins[0], true);
+    return Q.nfcall(gpio.write, this.motorPins[0], true);
 }
 // stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(thisP) {
 //     var mygpio = gpio;
