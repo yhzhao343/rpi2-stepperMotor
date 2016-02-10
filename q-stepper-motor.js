@@ -14,34 +14,34 @@ function stepperMotor(motorPins) {
                   [0,0,1,1],
                   [0,0,0,1],
                   [1,0,0,1]];
-    Q.allSettled(this.init()).then(this.go);
+    this.init().then(this.set0());
 }
 
 stepperMotor.prototype.init = function init() {
-    return Q.all(this.funcArrayGen(this.pinSetupFuncGen(this)));
+    return Q.nfcall(mygpio.setup, this.motorPins[0], gpio.DIR_OUT)
+    // return Q.all(this.funcArrayGen(this.pinSetupFuncGen(this)));
 }
-stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(thisP) {
-    var mygpio = gpio;
-    return function(pinNdx) {
-        var thisPointer = thisP;
-        var gpio = mygpio;
-        return function(callback) {
-            gpio.setup(thisPointer.motorPins[pinNdx], gpio.DIR_OUT, callback)
-        }
-    }
+stepperMotor.prototype.set0 = function set0() {
+    return Q.nfcall(mygpio.write, this.motorPins[0], true);
 }
+// stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(thisP) {
+//     var mygpio = gpio;
+//     return function(pinNdx) {
+//         mygpio.setup(thisP.motorPins[pinNdx], mygpio.DIR_OUT)
+//     }
+// }
 
-stepperMotor.prototype.funcArrayGen = function funcArrayGen(func) {
-    var result = [];
-    for(var i = 0; i < this.motorPins.length; i++) {
-        result.push(Q.denodeify(func(i)));
-    }
-    return result;
-}
+// stepperMotor.prototype.funcArrayGen = function funcArrayGen(func) {
+//     var result = [];
+//     for(var i = 0; i < this.motorPins.length; i++) {
+//         result.push(Q.denodeify(func(i)));
+//     }
+//     return result;
+// }
 
-stepperMotor.prototype.go = function go() {
-    setInterval(this.step(this), this.velocity)
-}
+// stepperMotor.prototype.go = function go() {
+//     setInterval(this.step(this), this.velocity)
+// }
 
 stepperMotor.prototype.step = function(thisPointer) {
     switch(thisPointer.runStatus) {
