@@ -18,15 +18,15 @@ function stepperMotor(motorPins) {
 }
 
 stepperMotor.prototype.init = function init() {
-    var thisP = this;
-    var mygpio = gpio
-    return Q.fcall(mygpio.setup, thisP.motorPins[0], mygpio.DIR_OUT, function(err, res) {
+    return Q.fcall(gpio.setup, this.motorPins[0], gpio.DIR_OUT, function(err, res) {
         console.log("I am called");
     })
     // return Q.all(this.funcArrayGen(this.pinSetupFuncGen(this)));
 }
 stepperMotor.prototype.set0 = function set0() {
-    return Q.fcall(gpio.write, this.motorPins[0], true);
+    gpio.write(this.motorPins[0], true, function(err, res) {
+        console.log("write to 0");
+    });
 }
 // stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(thisP) {
 //     var mygpio = gpio;
