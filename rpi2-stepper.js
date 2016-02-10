@@ -14,7 +14,7 @@ function stepperMotor(motorPins) {
                    [false,false,false,true],
                    [true,false,false,true]];
     this.init();
-    setInterval(this.step(this), this.velocity);
+    //setInterval(this.step(this), this.velocity);
 }
 
 
