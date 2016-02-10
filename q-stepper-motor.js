@@ -14,12 +14,16 @@ function stepperMotor(motorPins) {
                   [0,0,1,1],
                   [0,0,0,1],
                   [1,0,0,1]];
-    this.init().then(this.set0()).done();
+    this.init()
+    //.then(this.set0()).done();
 }
 
 stepperMotor.prototype.init = function init() {
+    var thisP = this;
     return Q.fcall(gpio.setup, this.motorPins[0], gpio.DIR_OUT, function(err, res) {
-        console.log("I am called");
+            gpio.write(thisP.motorPins[0], true, function(err, res) {
+                console.log("write to 0");
+            });
     })
     // return Q.all(this.funcArrayGen(this.pinSetupFuncGen(this)));
 }
