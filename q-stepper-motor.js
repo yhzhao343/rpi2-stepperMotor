@@ -14,7 +14,7 @@ function stepperMotor(motorPins) {
                   [0,0,1,1],
                   [0,0,0,1],
                   [1,0,0,1]];
-    this.init().then(this.set0());
+    this.init().then(this.set0()).done();
 }
 
 stepperMotor.prototype.init = function init() {
