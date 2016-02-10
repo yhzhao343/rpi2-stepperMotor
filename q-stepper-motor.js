@@ -14,16 +14,12 @@ function stepperMotor(motorPins) {
                   [0,0,1,1],
                   [0,0,0,1],
                   [1,0,0,1]];
-    //this.init()
-    //.then(this.set0()).done();
+    this.init().then(this.set0()).done();
 }
 
 stepperMotor.prototype.init = function init() {
-    var thisP = this;
     return Q.fcall(gpio.setup, this.motorPins[0], gpio.DIR_OUT, function(err, res) {
-            gpio.write(thisP.motorPins[0], true, function(err, res) {
-                console.log("write to 0");
-            });
+        console.log("I am called");
     })
     // return Q.all(this.funcArrayGen(this.pinSetupFuncGen(this)));
 }
@@ -71,9 +67,3 @@ stepperMotor.prototype.step = function(thisPointer) {
 }
 var motorPins = [11, 12, 13, 15];
 var motor = new stepperMotor(motorPins);
-
-gpio.setup(12, gpio.DIR_OUT, function() {
-    gpio.write(12, true, function() {
-        console.log("done");
-    })
-})
