@@ -21,9 +21,10 @@ function stepperMotor(motorPins) {
 stepperMotor.prototype.init = function() {
     var setupFuncArray = this.funcArrayGen(this.pinSetupFuncGen(this));
     var thisP = this;
+    thisP.setInterval = setInterval;
     async.parallel(setupFuncArray, function(err, results) {
       console.log("Pins set up");
-      setInterval(thisP.step(thisP), thisP.velocity);
+      thisP.setInterval(thisP.step(thisP), thisP.velocity);
     })
 }
 
