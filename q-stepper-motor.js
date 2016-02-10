@@ -61,3 +61,5 @@ stepperMotor.prototype.step = function(thisPointer) {
             console.log("invalid status");
     }
 }
+var motorPins = [11, 12, 13, 15];
+var motor = new stepperMotor(motorPins);
