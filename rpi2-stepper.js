@@ -26,11 +26,16 @@ stepperMotor.prototype.init = function() {
       console.log("Pins set up");
       thisP.setInterval(thisP.step(thisP), thisP.velocity);
     })
+
+
+
 }
 
 stepperMotor.prototype.pinSetupFuncGen = function pinSetupFuncGen(thisP) {
+    var mygpio = gpio;
     return function(pinNdx) {
         var thisPointer = thisP;
+        var gpio = mygpio;
         return function(callback) {
             gpio.setup(thisPointer.motorPins[pinNdx], gpio.DIR_OUT, callback)
         }
