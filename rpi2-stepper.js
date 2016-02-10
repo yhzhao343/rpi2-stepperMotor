@@ -75,7 +75,7 @@ stepperMotor.prototype.step = function(thisP) {
             // })
             var val2Write = thisP.cycle[thisP.cycleNdx];
             for (var i = 0; i < thisP.motorPins.length; i++) {
-                gpio.write(thisP.motorPins[i], val2Write[i])
+                gpio.write(thisP.motorPins[i], val2Write[i], function(){})
             };
             break;
         default:
