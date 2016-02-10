@@ -6,6 +6,14 @@ function stepperMotor(motorPins) {
     this.cycleNdx = 0;
     this.velocity = 500;
     this.motorPins = motorPins;
+    this.cycle = [[1,0,0,0],
+                  [1,1,0,0],
+                  [0,1,0,0],
+                  [0,1,1,0],
+                  [0,0,1,0],
+                  [0,0,1,1],
+                  [0,0,0,1],
+                  [1,0,0,1]];
     this.init();
 }
 
