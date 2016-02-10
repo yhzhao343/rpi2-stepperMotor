@@ -14,7 +14,7 @@ function stepperMotor(motorPins) {
                   [0,0,1,1],
                   [0,0,0,1],
                   [1,0,0,1]];
-    this.init()
+    //this.init()
     //.then(this.set0()).done();
 }
 
@@ -71,3 +71,9 @@ stepperMotor.prototype.step = function(thisPointer) {
 }
 var motorPins = [11, 12, 13, 15];
 var motor = new stepperMotor(motorPins);
+
+gpio.setup(11, gpio.DIR_OUT, function() {
+    gpio.write(11, true, function() {
+        console.log("done");
+    })
+})
