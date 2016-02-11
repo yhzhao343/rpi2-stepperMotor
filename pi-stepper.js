@@ -13,7 +13,7 @@ function Motor(motorPins) {
     var motorPins = motorPins;
     var runStatus = 2;
     var cycleNdx = 0;
-    var velocity =30;
+    var velocity = 35;
     var lastState = null;
 
     this.getVelocity = function() {
