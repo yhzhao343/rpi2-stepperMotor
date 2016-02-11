@@ -11,7 +11,7 @@ var cycle = [[true,false,false,false],
 
 function Motor(motorPins) {
     var motorPins = motorPins;
-    var runStatus = 1;
+    var runStatus = 2;
     var cycleNdx = 0;
     var velocity = 25;
     var lastState = null;
