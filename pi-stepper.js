@@ -105,4 +105,9 @@ Motor.prototype.step = function step() {
     this.newState(result);
 }
 
+Motor.prototype.go = function go() {
+    var thisP = this;
+    this.interval = setInterval(thisP.step(), thisP.getVelocity());
+}
+
 exports.Motor = Motor;
