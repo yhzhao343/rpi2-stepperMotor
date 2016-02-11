@@ -93,7 +93,9 @@ Motor.prototype.step = function step() {
     console.log("pinVal: " + pinVal);
     for (var i = 0; i < pinVal.length; i++) {
         console.log("pin " + this.getMotorPins()[i] + " value: " + pinVal[i]);
-        allPromises.push(writePin(this.getMotorPins()[i], pinVal[i]));
+        allPromises.push(writePin(this.getMotorPins()[i], pinVal[i], function() {
+            console.log("writePin...");
+        }));
     };
     var result = Q();
     allPromises.forEach(function(f) {
