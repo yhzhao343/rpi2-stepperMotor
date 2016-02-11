@@ -1,6 +1,6 @@
 var gpio = require('rpi-gpio');
 var Q = require('q');
-var cycle_8 = [[true,false,false,false],
+var cycle = [[true,false,false,false],
                [true,true,false,false],
                [false,true,false,false],
                [false,true,true,false],
@@ -45,7 +45,13 @@ function Motor(motorPins) {
                 console.log("Invalid status! Set failed");
         }
     }
-    this.getCycleNdx = function() {return cycleNdx}
+    this._increCycleNdx = function() {
+        var result = cycleNdx;
+        cycleNdx += runStatus;
+        cycleNdx = cycleNdx > 7 ? cycleNdx - 8 : cycleNdx;
+        cycleNdx = cycleNdx < 0 ? cycleNdx + 8 : cycleNdx;
+        return result;
+    }
     this.getMotorPins = function() {
         return motorPins
     }
@@ -60,13 +66,12 @@ function writePin(pinNum, val, callback) {
     gpio.setup(pinNum, val, function() {
         deferred.resolve();
     })
-    referred.resolve();
+    deferred.resolve();
 }
 
 Motor.prototype._init = function _init() {
     var deferred = Q.defer();
     var allPromises = [];
-    console.log(this);
     for(var i = 0; i < this.getMotorPins().length; i++) {
         allPromises.push(setupPin_out(this.getMotorPins()[i]));
     }
@@ -78,8 +83,20 @@ Motor.prototype._init = function _init() {
 
     return deferred.promise;
 }
-exports.Motor = Motor;
-// Motor.prototype.step = function step() {
-//     var deferred = Q.defer();
 
-// }
+Motor.prototype.step = function step() {
+    var deferred = Q.defer();
+    var cycleState = this._increCycleNdx();
+    var pinVal = cycle[cycleState];
+    var allPromises = [];
+    for (var i = 0; i < pinVal.length; i++) {
+        allPromises.push(writePin(this.getMotorPins()[i], pinVal[i]));
+    };
+    Q.all(allPromises).then(
+        function() {
+            deferred.resolve();
+        }, console.error);
+    this.newState(deferred.promise);
+}
+
+exports.Motor = Motor;
