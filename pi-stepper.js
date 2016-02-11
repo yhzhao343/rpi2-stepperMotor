@@ -63,8 +63,8 @@ function setupPin_out(pinNum, callback) {
 
 function writePin(pinNum, val, callback) {
     var deferred = Q.defer();
-    gpio.setup(pinNum, val, function() {
-        console.log("writePin");
+    gpio.write(pinNum, val, function(err, res) {
+
         deferred.resolve();
     })
     return deferred.promise.nodeify(callback);
