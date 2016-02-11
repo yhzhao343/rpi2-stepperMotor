@@ -86,12 +86,11 @@ Motor.prototype._init = function _init() {
 
 Motor.prototype.step = function step() {
     var cycleState = this._increCycleNdx();
-    console.log("cycleState: " + cycleState);
     var pinVal = cycle[cycleState];
     console.log("pinVal: " + pinVal);
     for (var i = 0; i < pinVal.length; i++) {
         console.log("pin " + this.getMotorPins()[i] + " value: " + pinVal[i]);
-        this.newState(writePin(this.getMotorPins()[i], pinVal[i]));
+        this.newState(writePin(this.getMotorPins()[i], pinVal[i]), function() {"writePin"});
     }
 }
 
