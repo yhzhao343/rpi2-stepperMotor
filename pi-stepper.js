@@ -64,6 +64,7 @@ function setupPin_out(pinNum, callback) {
 function writePin(pinNum, val, callback) {
     var deferred = Q.defer();
     gpio.setup(pinNum, val, function() {
+        console.log("writePin");
         deferred.resolve();
     })
     return deferred.promise.nodeify(callback);
@@ -89,7 +90,6 @@ Motor.prototype.step = function step() {
     var pinVal = cycle[cycleState];
     console.log("pinVal: " + pinVal);
     for (var i = 0; i < pinVal.length; i++) {
-        console.log("pin " + this.getMotorPins()[i] + " value: " + pinVal[i]);
         this.newState(writePin(this.getMotorPins()[i], pinVal[i]), function() {console.log("writePin")});
     }
 }
