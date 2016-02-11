@@ -97,6 +97,9 @@ Motor.prototype.step = function step() {
 
 Motor.prototype.go = function() {
     var thisP = this;
-    var inter = setInterval(thisP.step, thisP.getVelocity());
+    var callMethod = function() {
+        thisP.step();
+    }
+    var inter = setInterval(callMethod, thisP.getVelocity());
 }
 exports.Motor = Motor;
