@@ -105,9 +105,9 @@ Motor.prototype.step = function step() {
         this.newState(writePin(this.getMotorPins()[0], pinVal[0]));
         this.newState(writePin(this.getMotorPins()[3], pinVal[3]));
     }
-    for (var i = 0; i < pinVal.length; i++) {
-        this.newState(writePin(this.getMotorPins()[i], pinVal[i]));
-    }
+    // for (var i = 0; i < pinVal.length; i++) {
+    //     this.newState(writePin(this.getMotorPins()[i], pinVal[i]));
+    // }
 }
 
 Motor.prototype.go = function() {
