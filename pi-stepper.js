@@ -48,8 +48,14 @@ function Motor(motorPins) {
         return motorPins
     }
     lastState = this._init();
-    this.newState = function(newState) {
-        lastState = lastState.then(newState, console.log)
+    this.newState = function(allPromises) {
+        var deferred = Q.defer();
+        Q.all(allPromises).then(
+            function() {
+                deferred.resolve();
+            }, console.error
+        )
+        lastState = lastState.then(deferred, console.error)
     }
 }
 
@@ -97,12 +103,7 @@ Motor.prototype.step = function step() {
             console.log("writePin...");
         }));
     };
-    var result = Q();
-    allPromises.forEach(function(f) {
-        console.log("each function");
-        result = result.then(f)
-    });
-    this.newState(result);
+    this.newState(allPromises);
 }
 
 Motor.prototype.go = function go() {
