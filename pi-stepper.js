@@ -48,14 +48,8 @@ function Motor(motorPins) {
         return motorPins
     }
     lastState = this._init();
-    this.newState = function(allPromises) {
-        var deferred = Q.defer();
-        Q.all(allPromises).then(
-            function() {
-                deferred.resolve();
-            }, console.error
-        )
-        lastState = lastState.then(deferred, console.error)
+    this.newState = function(newState) {
+        lastState = lastState.then(newState, console.log)
     }
 }
 
@@ -95,20 +89,11 @@ Motor.prototype.step = function step() {
     var cycleState = this._increCycleNdx();
     console.log("cycleState: " + cycleState);
     var pinVal = cycle[cycleState];
-    var allPromises = [];
     console.log("pinVal: " + pinVal);
     for (var i = 0; i < pinVal.length; i++) {
         console.log("pin " + this.getMotorPins()[i] + " value: " + pinVal[i]);
-        allPromises.push(writePin(this.getMotorPins()[i], pinVal[i], function() {
-            console.log("writePin...");
-        }));
-    };
-    this.newState(allPromises);
-}
-
-Motor.prototype.go = function go() {
-    var thisP = this;
-    this.interval = setInterval(thisP.step(), thisP.getVelocity());
+        this.newState(writePin(this.getMotorPins()[i], pinVal[i]));
+    }
 }
 
 exports.Motor = Motor;
