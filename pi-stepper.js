@@ -49,7 +49,7 @@ function Motor(motorPins) {
     }
     lastState = this._init();
     this.newState = function(newState) {
-        lastState = lastState.then(newState)
+        lastState = lastState.then(newState, console.log)
     }
 }
 
@@ -87,6 +87,7 @@ Motor.prototype._init = function _init() {
 Motor.prototype.step = function step() {
     var deferred = Q.defer();
     var cycleState = this._increCycleNdx();
+    console.log("cycleState: " + cycleState);
     var pinVal = cycle[cycleState];
     var allPromises = [];
     for (var i = 0; i < pinVal.length; i++) {
