@@ -47,9 +47,8 @@ function Motor(motorPins) {
     this.getMotorPins = function() {
         return motorPins
     }
-    lastState = this._init();
-    this.newState = function(newState) {
-        lastState = lastState.then(newState, console.log)
+    this.newState = function newState(state) {
+        lastState = lastState.then(state, console.log)
     }
 }
 
