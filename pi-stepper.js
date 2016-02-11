@@ -9,14 +9,6 @@ var cycle = [[true,false,false,false],
                [false,false,false,true],
                [true,false,false,true]];
 
-function setupPin_out(pinNum, callback) {
-    var deferred = Q.defer();
-    gpio.setup(pinNum, gpio.DIR_OUT, function() {
-        deferred.resolve();
-    })
-    return deferred.promise.nodeify(callback);
-}
-
 function Motor(motorPins) {
     var motorPins = motorPins;
     var runStatus = 1;
@@ -61,12 +53,19 @@ function Motor(motorPins) {
     }
 }
 
+function setupPin_out(pinNum, callback) {
+    var deferred = Q.defer();
+    gpio.setup(pinNum, gpio.DIR_OUT, function() {
+        deferred.resolve();
+    })
+    return deferred.promise.nodeify(callback);
+}
+
 function writePin(pinNum, val, callback) {
     var deferred = Q.defer();
     gpio.setup(pinNum, val, function() {
         deferred.resolve();
     })
-    deferred.resolve();
     return deferred.promise.nodeify(callback);
 }
 
