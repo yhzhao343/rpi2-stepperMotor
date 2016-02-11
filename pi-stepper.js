@@ -13,7 +13,7 @@ function Motor(motorPins) {
     var motorPins = motorPins;
     var runStatus = 1;
     var cycleNdx = 0;
-    var velocity = 500;
+    var velocity = 50;
     var lastState = null;
 
     this.getVelocity = function() {
@@ -85,7 +85,6 @@ Motor.prototype._init = function _init() {
 }
 
 Motor.prototype.step = function step() {
-    var deferred = Q.defer();
     var cycleState = this._increCycleNdx();
     console.log("cycleState: " + cycleState);
     var pinVal = cycle[cycleState];
@@ -96,4 +95,8 @@ Motor.prototype.step = function step() {
     }
 }
 
+Motor.prototype.go = function() {
+    var thisP = this;
+    var inter = setInterval(thisP.step, thisP.getVelocity());
+}
 exports.Motor = Motor;
