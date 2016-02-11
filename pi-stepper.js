@@ -88,9 +88,31 @@ Motor.prototype._init = function _init() {
 Motor.prototype.step = function step() {
     var cycleState = this._increCycleNdx();
     var pinVal = cycle[cycleState];
-    for (var i = 0; i < pinVal.length; i++) {
-        this.newState(writePin(this.getMotorPins()[i], pinVal[i]));
+    var motorPins = this.getMotorPins();
+    switch(cycleState) {
+        case 0:
+        case 7:
+            this.newState(writePin(motorPins[0], pinVal[0]));
+            this.newState(writePin(motorPins[3], pinVal[3]));
+            break;
+        case 2:
+        case 4:
+        case 6:
+            this.newState(writePin(motorPins[cycleState/2], pinVal[cycleState/2]));
+            this.newState(writePin(motorPins[cycleState/2 - 1], pinVal[cycleState/2 - 1]));
+            break;
+        case 1:
+        case 3:
+        case 5:
+            this.newState(writePin(motorPins[(cycleState + 1)/2], pinVal[(cycleState + 1)/2]));
+            break;
     }
+
+
+
+    // for (var i = 0; i < pinVal.length; i++) {
+    //     this.newState(writePin(this.getMotorPins()[i], pinVal[i]));
+    // }
 }
 
 Motor.prototype.go = function() {
