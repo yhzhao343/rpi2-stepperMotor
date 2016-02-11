@@ -90,6 +90,7 @@ Motor.prototype.step = function step() {
     console.log("cycleState: " + cycleState);
     var pinVal = cycle[cycleState];
     var allPromises = [];
+    console.log("pinVal: " + pinVal);
     for (var i = 0; i < pinVal.length; i++) {
         allPromises.push(writePin(this.getMotorPins()[i], pinVal[i]));
     };
