@@ -96,7 +96,10 @@ Motor.prototype.step = function step() {
         allPromises.push(writePin(this.getMotorPins()[i], pinVal[i]));
     };
     var result = Q();
-    allPromises.forEach(function(f) {result = result.then(f)});
+    allPromises.forEach(function(f) {
+        console.log("each function");
+        result = result.then(f)
+    });
     this.newState(result);
 }
 
