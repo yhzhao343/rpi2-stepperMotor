@@ -11,7 +11,7 @@ var cycle = [[true,false,false,false],
 
 function Motor(motorPins) {
     var motorPins = motorPins;
-    var runStatus = 2;
+    var runStatus = 1;
     var cycleNdx = 0;
     var velocity = 50;
     var lastState = null;
@@ -47,10 +47,10 @@ function Motor(motorPins) {
     this.getMotorPins = function() {
         return motorPins
     }
+    lastState = this._init();
     this.newState = function(newState) {
         lastState = lastState.then(newState, console.log)
     }
-    lastState = this._init();
 }
 
 function setupPin_out(pinNum, callback) {
@@ -88,23 +88,28 @@ Motor.prototype._init = function _init() {
 Motor.prototype.step = function step() {
     var cycleState = this._increCycleNdx();
     var pinVal = cycle[cycleState];
+    var motorPins = this.getMotorPins();
     switch(cycleState) {
         case 0:
         case 2:
         case 4:
         case 6:
-            this.newState(writePin(this.getMotorPins()[cycleState/2], pinVal[cycleState/2]));
+            this.newState(writePin(motorPins[cycleState/2], pinVal[cycleState/2]));
             break;
         case 1:
         case 3:
         case 5:
-            this.newState(writePin(this.getMotorPins()[(cycleState - 1)/2], pinVal[(cycleState - 1)/2]));
-            this.newState(writePin(this.getMotorPins()[(cycleState + 1)/2], pinVal[(cycleState + 1)/2]));
+            this.newState(writePin(motorPins[(cycleState - 1)/2], pinVal[(cycleState - 1)/2]));
+            this.newState(writePin(motorPins[(cycleState + 1)/2], pinVal[(cycleState + 1)/2]));
             break;
         case 7:
-        this.newState(writePin(this.getMotorPins()[0], pinVal[0]));
-        this.newState(writePin(this.getMotorPins()[3], pinVal[3]));
+            this.newState(writePin(motorPins[0], pinVal[0]));
+            this.newState(writePin(motorPins[3], pinVal[3]));
+            break;
     }
+
+
+
     // for (var i = 0; i < pinVal.length; i++) {
     //     this.newState(writePin(this.getMotorPins()[i], pinVal[i]));
     // }
