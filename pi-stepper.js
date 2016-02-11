@@ -67,6 +67,7 @@ function writePin(pinNum, val, callback) {
         deferred.resolve();
     })
     deferred.resolve();
+    return deferred.promise.nodeify(callback);
 }
 
 Motor.prototype._init = function _init() {
