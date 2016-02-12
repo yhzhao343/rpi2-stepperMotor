@@ -1,4 +1,5 @@
 var gpio = require('rpi-gpio');
+require('qtimers');
 var Q = require('q');
 var cycle = [[true,false,false,false],
                [true,true,false,false],
