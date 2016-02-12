@@ -18,14 +18,20 @@ function Motor(motorPins) {
 
     var lastState = Q();
     var stepInterval = undefined;
+    this.stop = function() {
+        clearInterval(stepInterval);
+    }
     this.setVelocity = function(vel) {
         if (stepInterval) {
-            clearInterval(stepInterval);
+            this.stop();
             velocity = vel;
             this.go();
         } else {
             velocity = vel;
         }
+    }
+    this._setStepInterval = function(newInterval) {
+        stepInterval = newInterval;
     }
     this.newState = function(newState) {
         lastState = lastState.then(newState, console.log)
@@ -132,7 +138,7 @@ Motor.prototype.go = function() {
         thisP.step();
     }
     var setStepInterval = function() {
-        var inter = setInterval(callMethod, thisP.getVelocity());
+        thisP._setStepInterval(setInterval(callMethod, thisP.getVelocity()));
     }
     setTimeout(setStepInterval, 30);
 }
