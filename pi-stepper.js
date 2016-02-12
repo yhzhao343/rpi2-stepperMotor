@@ -13,8 +13,13 @@ function Motor(motorPins) {
     var motorPins = motorPins;
     var runStatus = 1;
     var cycleNdx = 0;
+<<<<<<< HEAD
     var velocity = 25;
     var lastState = Q();
+=======
+    var velocity = 20;
+    var lastState = null;
+>>>>>>> fee6056ad3922fa9aa8acddc2210f7ddaa19ac77
 
     this.newState = function(newState) {
         lastState = lastState.then(newState, console.log)
