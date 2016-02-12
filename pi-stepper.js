@@ -14,16 +14,22 @@ function Motor(motorPins) {
     var runStatus = 1;
     var cycleNdx = 0;
     var velocity = 20;
-    var lastState = Q();
+    //max speed for runStatus 1 is 20
 
+    var lastState = Q();
+    var stepInterval = undefined;
+    this.setVelocity = function(vel) {
+        if (stepInterval) {
+            clearInterval(stepInterval);
+        }
+        velocity = vel;
+        this.go();
+    }
     this.newState = function(newState) {
         lastState = lastState.then(newState, console.log)
     }
     this.getVelocity = function() {
         return velocity
-    }
-    this.setVelocity = function(vel) {
-        velocity = vel
     }
     this.getRunStatus = function() {
         return runStatus
@@ -76,18 +82,6 @@ Motor.prototype._init = function _init() {
     for(var i = 0; i < this.getMotorPins().length; i++) {
         this.newState(setupPin_out(motorPins[i]));
     }
-    // var deferred = Q.defer();
-    // var allPromises = [];
-    // for(var i = 0; i < this.getMotorPins().length; i++) {
-    //     allPromises.push(setupPin_out(this.getMotorPins()[i]));
-    // }
-    // Q.all(allPromises).then(
-    //     function() {
-    //         deferred.resolve();
-    //         console.log("pin initiation finished~");
-    //     }, console.error)
-
-    // return deferred.promise;
 }
 
 Motor.prototype.step = function step() {
