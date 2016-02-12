@@ -125,6 +125,9 @@ Motor.prototype.go = function() {
     var callMethod = function() {
         thisP.step();
     }
-    var inter = setInterval(callMethod, thisP.getVelocity());
+    var setStepInterval = function() {
+        var inter = setInterval(callMethod, thisP.getVelocity());
+    }
+    setTimeout(setStepInterval, 30);
 }
 exports.Motor = Motor;
