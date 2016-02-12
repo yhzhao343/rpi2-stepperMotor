@@ -21,9 +21,11 @@ function Motor(motorPins) {
     this.setVelocity = function(vel) {
         if (stepInterval) {
             clearInterval(stepInterval);
+            velocity = vel;
+            this.go();
+        } else {
+            velocity = vel;
         }
-        velocity = vel;
-        this.go();
     }
     this.newState = function(newState) {
         lastState = lastState.then(newState, console.log)
