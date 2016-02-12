@@ -1,5 +1,4 @@
 var gpio = require('rpi-gpio');
-require('qtimers');
 var Q = require('q');
 var cycle = [[true,false,false,false],
                [true,true,false,false],
@@ -14,7 +13,7 @@ function Motor(motorPins) {
     var motorPins = motorPins;
     var runStatus = 1;
     var cycleNdx = 0;
-    var velocity = 1;
+    var velocity = 5;
     var lastState = Q();
 
     this.newState = function(newState) {
