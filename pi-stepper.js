@@ -96,14 +96,14 @@ Motor.prototype.step = function step() {
     var motorPins = this.getMotorPins();
     switch(cycleState) {
         case 0:
+            this.newState(writePin(motorPins[3], pinVal[3]));
+            break;
         case 7:
             this.newState(writePin(motorPins[0], pinVal[0]));
-            this.newState(writePin(motorPins[3], pinVal[3]));
             break;
         case 2:
         case 4:
         case 6:
-            this.newState(writePin(motorPins[cycleState/2], pinVal[cycleState/2]));
             this.newState(writePin(motorPins[cycleState/2 - 1], pinVal[cycleState/2 - 1]));
             break;
         case 1:
