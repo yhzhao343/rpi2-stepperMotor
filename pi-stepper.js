@@ -117,6 +117,7 @@ Motor.prototype.step = function step() {
     } else {
         cycleState = cycleState%2 == 1 ? cycleState-1 : cycleState
         this.newState(writePin(motorPins[cycleState/2], pinVal[cycleState/2]));
+        this.newState(writePin(motorPins[cycleState/2 - 1], pinVal[cycleState/2 - 1]));
     }
 
 
