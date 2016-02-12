@@ -14,8 +14,11 @@ function Motor(motorPins) {
     var runStatus = 1;
     var cycleNdx = 0;
     var velocity = 25;
-    var lastState = null;
+    var lastState = Q();
 
+    this.newState = function(newState) {
+        lastState = lastState.then(newState, console.log)
+    }
     this.getVelocity = function() {
         return velocity
     }
@@ -47,10 +50,8 @@ function Motor(motorPins) {
     this.getMotorPins = function() {
         return motorPins
     }
-    lastState = this._init();
-    this.newState = function(newState) {
-        lastState = lastState.then(newState, console.log)
-    }
+    this._init();
+
 }
 
 function setupPin_out(pinNum, callback) {
@@ -71,18 +72,22 @@ function writePin(pinNum, val, callback) {
 }
 
 Motor.prototype._init = function _init() {
-    var deferred = Q.defer();
-    var allPromises = [];
+    var motorPins = this.getMotorPins();
     for(var i = 0; i < this.getMotorPins().length; i++) {
-        allPromises.push(setupPin_out(this.getMotorPins()[i]));
+        this.newState(setupPin_out(motorPins[i]));
     }
-    Q.all(allPromises).then(
-        function() {
-            deferred.resolve();
-            console.log("pin initiation finished~");
-        }, console.error)
+    // var deferred = Q.defer();
+    // var allPromises = [];
+    // for(var i = 0; i < this.getMotorPins().length; i++) {
+    //     allPromises.push(setupPin_out(this.getMotorPins()[i]));
+    // }
+    // Q.all(allPromises).then(
+    //     function() {
+    //         deferred.resolve();
+    //         console.log("pin initiation finished~");
+    //     }, console.error)
 
-    return deferred.promise;
+    // return deferred.promise;
 }
 
 Motor.prototype.step = function step() {
