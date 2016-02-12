@@ -11,7 +11,7 @@ var cycle = [[true,false,false,false],
 
 function Motor(motorPins) {
     var motorPins = motorPins;
-    var runStatus = 1;
+    var runStatus = -runStatus; = 1;
     var cycleNdx = 0;
     var velocity = 20;
     //max speed for runStatus 1 is 20
@@ -32,6 +32,9 @@ function Motor(motorPins) {
     }
     this._setStepInterval = function(newInterval) {
         stepInterval = newInterval;
+    }
+    this.reverse = function() {
+        runStatus = -runStatus;
     }
     this.newState = function(newState) {
         lastState = lastState.then(newState, console.log)
