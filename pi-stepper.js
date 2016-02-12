@@ -116,16 +116,18 @@ Motor.prototype.step = function step() {
         }
     } else {
         cycleState = cycleState%2 == 1 ? cycleState-1 : cycleState
-        this.newState(writePin(motorPins[cycleState/2], pinVal[cycleState/2]));
-        this.newState(writePin(motorPins[cycleState/2 - 1], pinVal[cycleState/2 - 1]));
+        switch(cycleState) {
+            case 0:
+                this.newState(writePin(motorPins[0], pinVal[0]));
+                this.newState(writePin(motorPins[3], pinVal[3]));
+                break;
+            default:
+                this.newState(writePin(motorPins[cycleState/2], pinVal[cycleState/2]));
+                this.newState(writePin(motorPins[cycleState/2 - 1], pinVal[cycleState/2 - 1]));
+                break;
+        }
+
     }
-
-
-
-
-    // for (var i = 0; i < pinVal.length; i++) {
-    //     this.newState(writePin(this.getMotorPins()[i], pinVal[i]));
-    // }
 }
 
 Motor.prototype.go = function() {
